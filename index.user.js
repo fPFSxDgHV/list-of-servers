@@ -897,7 +897,7 @@ class Mode {
 
     const currentMode = `
         <div class="player-list-wrapper">
-            <div>${ serverData?.rules?.si_mode }</div>
+            <div>${ serverData?.rules?.si_gameType }</div>
         </div>`
 
     return `
@@ -1280,7 +1280,7 @@ async function init() {
   removeOldStuff()
   injectStyles()
   injectRobotoFont()
-  const data = await DataLoader.fetchTestData()
+  const data = await DataLoader.fetchData()
   console.log(data)
   ListOfServers.render(data)
 }
