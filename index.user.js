@@ -244,7 +244,27 @@ class DataLoader {
             "gamename": "Q4MAX 0.82",
             "osmask": "0x7"
           },
-          "players": []
+          "players": [
+            {
+              "number": 0,
+              "name": "958wylsa",
+              "score": 0,
+              "clan": "WwW",
+              "type": "player",
+              "rate": "16000",
+              "ping": 54
+            },
+            {
+              "number": 999,
+              "name": "GOD OF WAR SANCHEZ",
+              "score": 999,
+              "clan": "WwW",
+              "type": "player",
+              "rate": "16000",
+              "ping": 0,
+            },
+
+          ]
         },
         {
           "protocol": "q4s",
@@ -752,7 +772,7 @@ class DataLoader {
     const url = 'https://stats.quake4.net/qstat/output.json'
 
     try {
-      const response = await fetch(url, {mode: 'no-cors'})
+      const response = await fetch(url)
       return await response.json()
     } catch (e) {
       console.error('failed to fetch stats', e)
@@ -762,6 +782,10 @@ class DataLoader {
 }
 
 class Server {
+  static clearRBGcolors(name) {
+    return name?.replaceAll(/\^[Cc]*\d{1,3}/g, '')
+  }
+
   static getMapImgSrc(serverData) {
     const map = serverData.map?.replace('mp/', '')
     if (!map) {
@@ -821,10 +845,19 @@ class Server {
     return address
   }
 
+  static getServerNameData(name) {
+    try {
+      return Server.clearRBGcolors(name)
+    } catch (e) {
+      return name``
+    }
+  }
+
   static getServerRow(serverData) {
     const flag = Server.getFlag(serverData)
     const { name } = serverData
     const address = Server.getServerAddress(serverData)
+    const serverName = Server.getServerNameData(name)
 
     return `
         <div class="server-name-wrapper">
@@ -836,7 +869,7 @@ class Server {
               <div class="serverName-wrapper">
                 ${flag}
                 <div>
-                    <div>${name}</div>
+                    <div>${serverName}</div>
                     <div>${address}</div>
                 </div>
               </div>
@@ -860,11 +893,20 @@ class Server {
     `
   }
 
+  static getPlayerName(name) {
+    try {
+      return Server.clearRBGcolors(name)
+    } catch (e) {
+      console.error(e)
+      return name
+    }
+  }
+
   static getPlayerList(serverData) {
     let result = ''
     serverData?.players?.map(player => result += `
         <div class="player-list-wrapper">
-            <div>${player.name}</div>
+            <div>${Server.getPlayerName(player.name)}</div>
             <div>${player.ping}</div>
         </div>`)
 
