@@ -1280,7 +1280,7 @@ async function init() {
   removeOldStuff()
   injectStyles()
   injectRobotoFont()
-  const data = await DataLoader.fetchData()
+  const data = await DataLoader.fetchTestData()
   console.log(data)
   ListOfServers.render(data)
 }
