@@ -24,43 +24,55 @@ const config = {
 const styles = `
 .server-wrapper {
   background-color: #edfff3;
-  border: 1px solid #73b077;
-  border-radius: 4px;
-  margin-bottom: 10px;
+  border: 1px solid #9fcfa1;
+  border-radius: 8px;
+  margin-bottom: 25px;
   font-family: 'Open Sans';
-  color: #000000;
-  font-weight: 300;
-  padding: 15px 20px;
-
+  color: #444444;
+  font-weight: 400;
+  padding: 25px 25px;
 }
 
 .server-top-row {
   display: flex;
   flex-direction: row;
 }
-
+.server-name-header-wrapper {
+  text-transform: uppercase;
+  font-size: 14pt;
+  margin-bottom: 10px;
+}
 .serverName-wrapper {
   display: flex;
   flex-direction: row;
   align-items: end;
   margin-top: 10px;
+  font-size: 12pt;
+  margin-bottom: 15px;
 }
 
 .serverName-wrapper img {
-  width: 20px;
+  width: 25px;
   margin-right: 10px;
+  border-radius: 0;
+  padding-bottom: 16px;
 }
 
 .player-list-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  text-transform: uppercase;
+  font-size: 14pt;
+  margin-bottom: 10px;
 }
 
 .player-list-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-size: 12pt;
+  padding: 3px;
 }
 
 .server-bottom-wrapper {
@@ -70,8 +82,8 @@ const styles = `
 }
 
 .server-bottom-wrapper img {
-  width: 150px;
-  height: 80px;
+  max-width: 300px;
+  height: auto;
 }
 
 .server-name-wrapper {
@@ -82,11 +94,23 @@ const styles = `
   width: 15%;
 }
 
+.map-name-header {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  text-transform: uppercase;
+  font-size: 13pt;
+  margin-bottom: 10px;
+}
 .map-name-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 40%;
+  align-items: end;
+}
+.map-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .mode-name-text-wrapper {
@@ -99,9 +123,10 @@ const styles = `
 
 .server-img-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 40%;
+  flex-direction: row;
+  align-items: end;
+  margin-left: 100px;
+  width: 100%;
 }
 
 .server-name-header-wrapper {
@@ -181,7 +206,7 @@ class DataLoader {
         "hostname": "msk.quake4.net:28004",
         "name": "WwW Quake.net Moscow",
         "gametype": "q4max",
-        "map": "mp/q4dm2tmp",
+        "map": "mp/q4aero_QL_beta",
         "numplayers": 0,
         "maxplayers": 10,
         "numspectators": 0,
@@ -306,8 +331,10 @@ class Server {
   static getMapImg(serverData) {
     const src = Server.getMapImgSrc(serverData)
     return `
+    <div class="map-image-wrapper">
     <div class="server-img-wrapper">
         <img src="${src}" />
+    </div>
     </div>
     `
   }
@@ -337,7 +364,7 @@ class Server {
   static getModeRow() {
     return `
         <div class="mode-name-wrapper">
-            <div>MODE</div>
+            <div>Mode</div>
             <div class="mode-name-text-wrapper">Duel</div>
         </div>
       
@@ -360,8 +387,8 @@ class Server {
     return `
         <div class="server-name-wrapper">
             <div class="server-name-header-wrapper">
-                <div>SERVER</div>
-                <div>MODE</div>
+                <div>Server</div>
+                <div>Mode</div>
             </div>
             <div class="server-name-mode-wrapper">
               <div class="serverName-wrapper">
@@ -380,10 +407,14 @@ class Server {
   static getMapRow(serverData) {
     const mapName = serverData.map
     return `
-      <div class="map-name-wrapper">
-        <div>Map</div>
-        <div>${mapName}</div>
-      </div>
+        <div class="map-name-wrapper">
+            <div class="map-name-header">
+                <div>Map</div>
+            </div>
+            <div class="map-name-wrapper">
+                <div>${mapName}</div>
+            </div>
+        </div>
     `
   }
 
