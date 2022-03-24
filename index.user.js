@@ -27,6 +27,11 @@ const styles = `
   border: 1px solid #73b077;
   border-radius: 4px;
   margin-bottom: 10px;
+  font-family: 'Open Sans';
+  color: #000000;
+  font-weight: 300;
+  padding: 15px 20px;
+
 }
 
 .server-top-row {
@@ -38,6 +43,7 @@ const styles = `
   display: flex;
   flex-direction: row;
   align-items: end;
+  margin-top: 10px;
 }
 
 .serverName-wrapper img {
@@ -48,21 +54,66 @@ const styles = `
 .player-list-header {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .player-list-wrapper {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 
 .server-bottom-wrapper {
   display: flex;
   flex-direction: row;
+  margin-top: 10px;
 }
 
 .server-bottom-wrapper img {
   width: 150px;
   height: 80px;
+}
+
+.server-name-wrapper {
+  width: 60%;
+}
+
+.mode-name-wrapper {
+  width: 15%;
+}
+
+.map-name-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+}
+
+.mode-name-text-wrapper {
+  margin-top: 10px;
+}
+
+.players-list-wrapper {
+  width: 60%;
+}
+
+.server-img-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40%;
+}
+
+.server-name-header-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.server-name-mode-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 `
 
@@ -75,6 +126,12 @@ function removeOldStuff() {
 function injectStyles() {
   const style = document.createElement('style');
   style.textContent = styles;
+  document.head.append(style);
+}
+
+function injectRobotoFont() {
+  const style = document.createElement('style')
+  style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');`
   document.head.append(style);
 }
 
@@ -249,7 +306,7 @@ class Server {
   static getMapImg(serverData) {
     const src = Server.getMapImgSrc(serverData)
     return `
-    <div>
+    <div class="server-img-wrapper">
         <img src="${src}" />
     </div>
     `
@@ -279,28 +336,43 @@ class Server {
 
   static getModeRow() {
     return `
-        <div>
-            <div>Mode</div>
-            <div>Duel</div>
+        <div class="mode-name-wrapper">
+            <div>MODE</div>
+            <div class="mode-name-text-wrapper">Duel</div>
         </div>
       
     `
   }
 
+  static getServerAddress(serverData) {
+    const { address } = serverData
+    if (address.includes(':')) {
+      return serverData?.address?.split(':')?.[0]
+    }
+    return address
+  }
+
   static getServerRow(serverData) {
     const flag = Server.getFlag(serverData)
-    const { name, address } = serverData
+    const { name } = serverData
+    const address = Server.getServerAddress(serverData)
 
     return `
-        <div>
-            <div>Server</div>
-            <div class="serverName-wrapper">
+        <div class="server-name-wrapper">
+            <div class="server-name-header-wrapper">
+                <div>SERVER</div>
+                <div>MODE</div>
+            </div>
+            <div class="server-name-mode-wrapper">
+              <div class="serverName-wrapper">
                 ${flag}
                 <div>
                     <div>${name}</div>
                     <div>${address}</div>
                 </div>
-            </div>  
+              </div>
+              <div>Duel</div>
+            </div>
         </div>  
     `
   }
@@ -308,7 +380,7 @@ class Server {
   static getMapRow(serverData) {
     const mapName = serverData.map
     return `
-      <div>
+      <div class="map-name-wrapper">
         <div>Map</div>
         <div>${mapName}</div>
       </div>
@@ -335,7 +407,7 @@ class Server {
         </div>`
     const playerList = Server.getPlayerList(serverData)
     return `
-      <div>
+      <div class="players-list-wrapper">
         ${playersCount}
         ${playerList}
       </div>
@@ -353,7 +425,6 @@ class Server {
       <div class="server-wrapper">
         <div class="server-top-row">
           ${server}
-          ${mode}
           ${map}
         </div>
         <div class="server-bottom-wrapper">
@@ -367,8 +438,7 @@ class Server {
 
 class ListOfServers {
   static getListOfServersElements(serversData) {
-    const elementsToRender = serversData.map(Server.render)
-    return elementsToRender
+    return serversData.map(Server.render)
   }
 
   static render(serversData) {
@@ -380,6 +450,7 @@ class ListOfServers {
 async function init() {
   removeOldStuff()
   injectStyles()
+  injectRobotoFont()
   const data = await DataLoader.fetchTestData()
   ListOfServers.render(data)
   console.log(data)
