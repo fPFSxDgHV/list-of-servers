@@ -65,7 +65,6 @@ const styles = `
 .serverName-wrapper {
   display: flex;
   flex-direction: row;
-  align-items: end;
   font-size: 12pt;
   margin-bottom: 15px;
 }
