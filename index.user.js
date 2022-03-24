@@ -66,7 +66,6 @@ const styles = `
   display: flex;
   flex-direction: row;
   align-items: end;
-  margin-top: 10px;
   font-size: 12pt;
   margin-bottom: 15px;
 }
