@@ -1039,7 +1039,7 @@ class TimeoutServer {
               <div class="serverName-wrapper">
                 ${ flag }
                 <div>
-                    <div>${ address }</div>
+                    <div class="row-server-address">${ address }</div>
                 </div>
               </div>
             </div>
@@ -1207,8 +1207,8 @@ class Server {
               <div class="serverName-wrapper">
                 ${ flag }
                 <div>
-                    <div>${ serverName }</div>
-                    <div>${ address }</div>
+                    <div class="row-server-name">${ serverName }</div>
+                    <div class="row-server-address">${ address }</div>
                 </div>
               </div>
             </div>
