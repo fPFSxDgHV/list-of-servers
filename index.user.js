@@ -781,6 +781,96 @@ class DataLoader {
   }
 }
 
+class Players {
+  static getPlayerName(name) {
+    try {
+      return Server.clearRBGcolors(name)
+    } catch (e) {
+      console.error(e)
+      return name
+    }
+  }
+
+  static getPlayers(serverData) {
+    let result = ''
+    serverData?.players?.map(player => result += `
+        <div class="player-list-wrapper">
+            <div>${Players.getPlayerName(player.name)}</div>
+        </div>`)
+
+    return result
+  }
+
+  static getPlayersRow(serverData) {
+    const { numplayers, maxplayers } = serverData
+    const playersCount = `
+        <div class="player-list-header">
+            <div>Players: ${numplayers}/${maxplayers}</div>
+        </div>`
+    const playerList = Players.getPlayers(serverData)
+    return `
+      <div class="players-list-wrapper">
+        ${playersCount}
+        ${playerList}
+      </div>
+    `
+  }
+}
+
+class Clan {
+  static getClans(serverData) {
+    let result = ''
+    serverData?.players?.map(player => result += `
+        <div class="player-list-wrapper">
+            <div>${player.clan}</div>
+        </div>`)
+
+    return result
+  }
+
+  static getClansRow(serverData) {
+    const clans = Clan.getClans(serverData)
+    const clansHeader = `
+        <div class="player-list-header">
+            <div>Clan</div>
+        </div>`
+
+    return `
+      <div class="players-list-wrapper">
+        ${clansHeader}
+        ${clans}
+      </div>
+    `
+  }
+}
+
+class Ping {
+  static getPing(serverData) {
+    let result = ''
+    serverData?.players?.map(player => result += `
+        <div class="player-list-wrapper">
+            <div>${player.ping}</div>
+        </div>`)
+
+    return result
+  }
+
+  static getPingRow(serverData) {
+    const ping = Ping.getPing(serverData)
+    const pingHeader = `
+        <div class="player-list-header">
+            <div>Ping</div>
+        </div>`
+
+    return `
+      <div class="players-list-wrapper">
+        ${pingHeader}
+        ${ping}
+      </div>
+    `
+  }
+}
+
 class Server {
   static clearRBGcolors(name) {
     return name?.replaceAll(/\^[Cc]*\d{1,3}/g, '')
@@ -893,48 +983,14 @@ class Server {
     `
   }
 
-  static getPlayerName(name) {
-    try {
-      return Server.clearRBGcolors(name)
-    } catch (e) {
-      console.error(e)
-      return name
-    }
-  }
-
-  static getPlayerList(serverData) {
-    let result = ''
-    serverData?.players?.map(player => result += `
-        <div class="player-list-wrapper">
-            <div>${Server.getPlayerName(player.name)}</div>
-            <div>${player.ping}</div>
-        </div>`)
-
-    return result
-  }
-
-  static getPlayersRow(serverData) {
-    const { numplayers, maxplayers } = serverData
-    const playersCount = `
-        <div class="player-list-header">
-            <div>Players: ${numplayers}/${maxplayers}</div>
-            <div>Ping</div>
-        </div>`
-    const playerList = Server.getPlayerList(serverData)
-    return `
-      <div class="players-list-wrapper">
-        ${playersCount}
-        ${playerList}
-      </div>
-    `
-  }
-
   static render(serverData) {
     const server = Server.getServerRow(serverData)
     const mode = Server.getModeRow(serverData)
     const map = Server.getMapRow(serverData)
-    const players = Server.getPlayersRow(serverData)
+    const players = Players.getPlayersRow(serverData)
     const mapImg = Server.getMapImg(serverData)
+    const clan = Clan.getClansRow(serverData)
+    const ping = Ping.getPingRow(serverData)
 
     return `
       <div class="server-wrapper">
@@ -944,6 +1000,8 @@ class Server {
         </div>
         <div class="server-bottom-wrapper">
           ${players}
+          ${clan}
+          ${ping}
           ${mapImg}
         </div>
       </div>
