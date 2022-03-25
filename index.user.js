@@ -825,7 +825,7 @@ class Clan {
     let result = ''
     serverData?.players?.map(player => result += `
         <div class="player-list-wrapper">
-            <div>${ player.clan }</div>
+            <div>${ Server.clearRBGcolors(player.clan) }</div>
         </div>`)
 
     return result
@@ -1022,6 +1022,7 @@ class TimeoutServer {
       </div>
     `
   }
+
   static getPlayersRow(serverData) {
     const playersCount = `
         <div class="player-list-header">
@@ -1141,7 +1142,7 @@ class TimeoutServer {
   }
 
   static isServerTimeout(serverData) {
-    return serverData?.status === 'timeout' ||  serverData?.status ==='offline'
+    return serverData?.status === 'timeout' || serverData?.status === 'offline'
   }
 }
 
@@ -1286,7 +1287,7 @@ async function init() {
   removeOldStuff()
   injectStyles()
   injectSFMonoFont()
-  const data = await DataLoader.fetchData()
+  const data = await DataLoader.fetchTestData()
   console.log(data)
   ListOfServers.render(data)
 }
