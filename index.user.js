@@ -153,6 +153,10 @@ const styles = `
   display: flex;
   flex-direction: column;
 }
+
+.player-text-wrapper {
+  margin-top: 5px;
+}
 `
 
 function removeOldStuff() {
@@ -790,7 +794,7 @@ class Players {
     let result = ''
     serverData?.players?.map(player => result += `
         <div class="player-list-wrapper">
-            <div>${ Players.getPlayerName(player.name) }</div>
+            <div class="player-text-wrapper">${ Players.getPlayerName(player.name) }</div>
         </div>`)
 
     return result
