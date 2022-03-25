@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name        New script - quake4.net
-// @namespace   Violentmonkey Scripts
+// @name        New script - quake4.net 121
+// @namespace   Violentmonkey Scripts 2weq
 // @match       https://quake4.net/servers/
 // @grant       none
 // @version     1.0
@@ -24,11 +24,10 @@ const styles = `
   border: 1px solid #e08879;
   border-radius: 8px;
   margin-bottom: 25px;
-  font-family: 'Open Sans';
+  font-family: 'SF Mono';
   color: #444444;
   font-weight: 400;
   padding: 25px 25px;
-  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -39,11 +38,10 @@ const styles = `
   border: 1px solid #9fcfa1;
   border-radius: 8px;
   margin-bottom: 25px;
-  font-family: 'Open Sans';
+  font-family: 'SF Mono';
   color: #444444;
   font-weight: 400;
   padding: 25px 25px;
-  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -60,7 +58,7 @@ const styles = `
 .server-name-header-wrapper {
   text-transform: uppercase;
   font-size: 14pt;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 .serverName-wrapper {
   display: flex;
@@ -70,10 +68,10 @@ const styles = `
 }
 
 .serverName-wrapper img {
-  width: 25px;
+  width: 30px;
   margin-right: 10px;
   border-radius: 0;
-  padding-bottom: 16px;
+  padding-bottom: 10px;
 }
 
 .player-list-header {
@@ -82,7 +80,7 @@ const styles = `
   justify-content: space-between;
   text-transform: uppercase;
   font-size: 14pt;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .player-list-wrapper {
@@ -90,6 +88,7 @@ const styles = `
   flex-direction: row;
   justify-content: space-between;
   font-size: 12pt;
+  margin-bottom: 5px;
 }
 
 .server-bottom-wrapper {
@@ -101,6 +100,7 @@ const styles = `
 .server-bottom-wrapper img, .server-img-wrapper img {
   max-width: 300px;
   height: auto;
+  filter: brightness(150%);
 }
 
 .mode-name-wrapper {
@@ -155,7 +155,11 @@ const styles = `
 }
 
 .player-text-wrapper {
-  margin-bottom: 5px;
+  margin-bottom: 0px;
+}
+.row-server-address {
+  font-size: 10pt;
+  font-weight: bold;
 }
 `
 
@@ -171,9 +175,9 @@ function injectStyles() {
   document.head.append(style)
 }
 
-function injectRobotoFont() {
+function injectSFMonoFont() {
   const style = document.createElement('style')
-  style.textContent = `@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');`
+  style.textContent = `@import url('https://quake4.net/wp-includes/fonts/sfmono.css');`
   document.head.append(style)
 }
 
@@ -260,12 +264,12 @@ class DataLoader {
         'osmask': '0x7'
       },
       'players': [{
-        'number': 0, 'name': '958wylsa', 'score': 0, 'clan': 'WwW', 'type': 'player', 'rate': '16000', 'ping': 54
+        'number': 0, 'name': '^958wylsa', 'score': 0, 'clan': '^3W^5w^3W', 'type': 'player', 'rate': '16000', 'ping': 54
       }, {
         'number': 999,
         'name': 'GOD OF WAR SANCHEZ',
         'score': 999,
-        'clan': 'WwW',
+        'clan': '[FCDP]',
         'type': 'player',
         'rate': '16000',
         'ping': 0,
@@ -279,7 +283,7 @@ class DataLoader {
       'hostname': 'msk.quake4.net:28004',
       'name': '^3W^5w^3W ^c999Quake^c9024^c999.net ^c910Mo^c059sc^c999ow',
       'gametype': 'q4max',
-      'map': 'mp/l4dm2_1',
+      'map': 'mp/q4ctf5',
       'numplayers': 0,
       'maxplayers': 10,
       'numspectators': 0,
@@ -1137,7 +1141,7 @@ class TimeoutServer {
   }
 
   static isServerTimeout(serverData) {
-    return serverData?.status === 'timeout'
+    return serverData?.status === 'timeout' ||  serverData?.status ==='offline'
   }
 }
 
@@ -1281,8 +1285,8 @@ class ListOfServers {
 async function init() {
   removeOldStuff()
   injectStyles()
-  injectRobotoFont()
-  const data = await DataLoader.fetchTestData()
+  injectSFMonoFont()
+  const data = await DataLoader.fetchData()
   console.log(data)
   ListOfServers.render(data)
 }
