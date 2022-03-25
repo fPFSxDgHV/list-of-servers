@@ -161,6 +161,10 @@ const styles = `
   font-size: 10pt;
   font-weight: bold;
 }
+
+.time-infinity {
+  font-size: 12pt;
+}
 `
 
 function removeOldStuff() {
@@ -880,9 +884,12 @@ class Time {
         <div class="player-list-header">
             <div>Time</div>
         </div>`
+
+    const time = serverData?.rules?.['.Score_Time'] || `<span class="time-infinity">&#8734;</span>`
+
     const currentTime = `
         <div class="player-list-wrapper">
-            <div>${ serverData?.rules?.['.Score_Time'] }</div>
+            <div>${ time }</div>
         </div>`
 
     return `
@@ -1287,7 +1294,7 @@ async function init() {
   removeOldStuff()
   injectStyles()
   injectSFMonoFont()
-  const data = await DataLoader.fetchTestData()
+  const data = await DataLoader.fetchData()
   console.log(data)
   ListOfServers.render(data)
 }
